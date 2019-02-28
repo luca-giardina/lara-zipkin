@@ -1,0 +1,22 @@
+{
+    "name": "lucagiardina/lara-zipkin",
+    "description": "Wrapper for openzipkin/zipkin",
+    "require": {
+	   "openzipkin/zipkin": "~1.0",
+       "php": "^7.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Luca Giardina",
+            "email": "giardin4.luc4@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "Giardina\\LaraZipkin\\": "src/"
+        }
+    },
+    "prefer-stable": true
+}
