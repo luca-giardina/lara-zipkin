@@ -40,11 +40,6 @@ class ZipkinDisabled
 		return true;
 	}
 
-	public function addNewChild($name, $kind)
-	{
-		return null;
-	}
-
 	public function annotate($note)
 	{
 	}

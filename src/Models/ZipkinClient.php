@@ -58,6 +58,9 @@ class ZipkinClient
 
 	public function newChild( $name = 'no-name', $kind = 'NOKIND' ) : Span
 	{
+		if( !$this->mainSpan )
+			$this->mainSpan = $this->getNextSpan('Generic', 'SERVER');
+
 		$childSpan = $this->getTracer()->newChild($this->mainSpan->getContext());
 		
 		$childSpan->setName($name);
@@ -96,11 +99,6 @@ class ZipkinClient
 			return false;
 		}
 		return true;
-	}
-
-	public function addNewChild($name, $kind)
-	{
-		return $this->newChild($name, $kind);
 	}
 
 	public function annotate($note)
@@ -162,7 +160,7 @@ class ZipkinClient
 	public function track($spanName, $method, $kind = 'PRODUCER')
 	{
         if( !isset($this->spans[$spanName]) )
-            $this->spans[$spanName] = $this->addNewChild($spanName, $kind);
+            $this->spans[$spanName] = $this->newChild($spanName, $kind);
 
         $this->annotateFor($spanName, $method . '_starts');
 	}
