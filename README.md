@@ -106,7 +106,7 @@ app('ZipkinClient')->trackEndCall($spanName, $callName);
 ```
 
 
-#N.B.#
+# N.B.
 It's possible to use the core object itself as detailed at https://github.com/openzipkin/zipkin-php using the method 
 ```public function getTracer() : Tracer```
 
