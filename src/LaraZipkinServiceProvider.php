@@ -25,7 +25,7 @@ class LaraZipkinServiceProvider extends ServiceProvider
         // bind the object zipkin
         $this->app->singleton('ZipkinClient', function($app)
         {
-            if( ! env('ZIPKIN_TRACKING_ENABLED', false) )
+            if( ! env('ZIPKIN_TRACING_ENABLED', false) )
                 return new ZipkinDisabled();
 
             $ZipkinServerAddr = env('ZIPKIN_SERVER_ADDR') ?? '127.0.0.1';

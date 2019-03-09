@@ -36,30 +36,31 @@ class ZipkinClient
 		return $this->mainSpan;
 	}
 
-	public function getNextSpan( $name = 'no-name', $kind = 'NOKIND', $headers = null ) : Span
+	public function getNextSpan( $name = 'no-name', $kind = 'SERVER', $headers = null ) : Span
 	{
-		$extractedContext = null;
+		if( !$this->getCurrentSpan() )
+			$this->mainSpan = $this->getTracer()->newTrace();
+		else
+			$this->mainSpan = $this->getTracer()->nextSpan();
 
-		if( !empty($headers) )
-		{
-			$extractedContext = $this->getExractedContext($headers);
+		if($headers) {
+			$context = $this->joinCurrentSpan(
+				$headers['TraceId'] ?? null,
+				$headers['ParentId'] ?? null
+			);
 		}
 
-		$span = $this->getTracer()->nextSpan($extractedContext);
-		
-		
-		$span->setName($name);
-		$span->setKind($kind);
-		$span->start(Timestamp\now());
+		$this->mainSpan->setName($name);
+		$this->mainSpan->setKind($kind);
+		$this->mainSpan->start(Timestamp\now());
 
-		$this->mainSpan = $span;
-		return $span;
+		return $this->mainSpan;
 	}
 
-	public function newChild( $name = 'no-name', $kind = 'NOKIND' ) : Span
+	public function newChild( $name = 'no-name', $kind = 'SERVER' ) : Span
 	{
 		if( !$this->mainSpan )
-			$this->mainSpan = $this->getNextSpan('Generic', 'SERVER');
+			$this->mainSpan = $this->getNextSpan('Generic', $kind);
 
 		$childSpan = $this->getTracer()->newChild($this->mainSpan->getContext());
 		
@@ -71,7 +72,7 @@ class ZipkinClient
 
 	}
 
-	public function newChildFor($span = null, $name = 'no-name', $kind = 'NOKIND') {
+	public function newChildFor($span = null, $name = 'no-name', $kind = 'SERVER') {
 		if( !$span ) 
 			return null;
 		
@@ -81,13 +82,6 @@ class ZipkinClient
 		$childSpan->start(Timestamp\now());
 
 		return $childSpan;
-	}
-
-	protected function getExractedContext( $headers )
-	{
-		$extractor = $this->tracing->getPropagation()->getExtractor(new Map());
-
-		return $extractor($headers);
 	}
 
 	public function flush()
@@ -115,12 +109,10 @@ class ZipkinClient
 	{
 		try{
 			$this->mainSpan->finish();
-			$this->mainSpan = $this->getTracer()->getCurrentSpan();
 		}
 		catch(Exception $e) {
 			return false;
 		}
-		return $this->mainSpan;
 	}
 
 	public function finishAllSpan()
@@ -181,14 +173,7 @@ class ZipkinClient
 		if(!$traceId)
 			return null;
 
-		$joinContext = TraceContext::create(
-	        $traceId,
-	        $this->getTraceSpanId(),
-	        $parentId,
-	        true
-		);
-
-		$this->mainSpan = $this->getTracer()->joinSpan($joinContext);
+		$this->mainSpan = $this->getTracer()->joinSpan($this->getJoinContext($traceId, $this->getTraceSpanId(), $parentId));
 		$this->getTracer()->openScope($this->mainSpan);
 	}
 
@@ -197,6 +182,15 @@ class ZipkinClient
 		$this->mainSpan->tag($name, $value);
 	}
 
+	protected function getJoinContext($traceId, $spanId, $parentId = null)
+	{
+		return TraceContext::create(
+	        $traceId,
+	        $spanId,
+	        $parentId,
+	        true
+		);
+	}
 }
 
 ?>
