@@ -1,6 +1,13 @@
 # Lara-Zipkin
 Wrapper for Laravel and Lumen using php-zipking
 
+[![Latest Stable Version](https://poser.pugx.org/lucagiardina/lara-zipkin/v/stable)](https://packagist.org/packages/lucagiardina/lara-zipkin)
+[![Total Downloads](https://poser.pugx.org/lucagiardina/lara-zipkin/downloads)](https://packagist.org/packages/lucagiardina/lara-zipkin)
+[![Latest Unstable Version](https://poser.pugx.org/lucagiardina/lara-zipkin/v/unstable)](https://packagist.org/packages/lucagiardina/lara-zipkin)
+[![License](https://poser.pugx.org/lucagiardina/lara-zipkin/license)](https://packagist.org/packages/lucagiardina/lara-zipkin)
+[![Monthly Downloads](https://poser.pugx.org/lucagiardina/lara-zipkin/d/monthly)](https://packagist.org/packages/lucagiardina/lara-zipkin)
+[![Daily Downloads](https://poser.pugx.org/lucagiardina/lara-zipkin/d/daily)](https://packagist.org/packages/lucagiardina/lara-zipkin)
+
 
 ## Getting Started
 

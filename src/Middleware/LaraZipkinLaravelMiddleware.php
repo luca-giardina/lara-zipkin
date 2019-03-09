@@ -35,7 +35,7 @@ class LaraZipkinMiddleware
         }
         /* Creates the span for the request and Injects the context into the wire */
         app('ZipkinClient')->getNextSpan(
-            Route::current()->uri() ?? $request->getRequestUri(),
+            Route::currentRouteName() ?? Route::current()->uri() ?? $request->getRequestUri(),
             Kind\SERVER,
             $headers
         );
