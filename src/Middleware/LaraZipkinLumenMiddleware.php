@@ -3,7 +3,6 @@ namespace Giardina\LaraZipkin\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 
 use Zipkin\Propagation\Map;
 use Zipkin\Propagation\DefaultSamplingFlags;
@@ -22,7 +21,7 @@ class LaraZipkinMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if( !env('ZIPKIN_TRACKING_ENABLED', false) )
+        if( !env('ZIPKIN_TRACING_ENABLED', false) )
             return $next($request);
 
         // creating main span using current route name if set or getCurrentRoutePath if match or getPathInfo as last choice
@@ -55,6 +54,7 @@ class LaraZipkinMiddleware
         $response->header('X-B3-SpanId', (string) app('ZipkinClient')->getTraceSpanId());
         $response->header('X-B3-Sampled', app('ZipkinClient')->isSampled());
 
+        app('ZipkinClient')->tagBy(Tags\HTTP_STATUS_CODE, $response->status());
 
         app('ZipkinClient')->finishAllSpan();
 

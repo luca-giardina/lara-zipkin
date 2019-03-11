@@ -148,6 +148,8 @@ app('ZipkinClient')->tagBy('x.forwarded.for', $request->ip());
 app('ZipkinClient')->tagBy(Tags\HTTP_ROUTE, $request->fullUrl());
 app('ZipkinClient')->tagBy(Tags\HTTP_METHOD, $request->method());
 app('ZipkinClient')->tagBy('http.request', json_encode($request->all()));
+
+app('ZipkinClient')->tagBy(Tags\HTTP_STATUS_CODE, $response->status());
 ```
 
 

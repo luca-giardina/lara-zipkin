@@ -52,6 +52,7 @@ class LaraZipkinMiddleware
         $response->header('X-B3-SpanId', (string) app('ZipkinClient')->getTraceSpanId());
         $response->header('X-B3-Sampled', app('ZipkinClient')->isSampled());
 
+        app('ZipkinClient')->tagBy(Tags\HTTP_STATUS_CODE, $response->status());
 
         app('ZipkinClient')->finishAllSpan();
 
