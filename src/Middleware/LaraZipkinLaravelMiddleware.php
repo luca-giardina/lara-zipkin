@@ -48,7 +48,7 @@ class LaraZipkinMiddleware
         $response = $next($request);
 
         $response->header('X-B3-TraceId', (string) app('ZipkinClient')->getTraceId());
-        $response->header('X-B3-ParentId', (string) app('ZipkinClient')->getTraceSpanId());
+        $response->header('X-B3-ParentId', $request->header('X-B3-ParentId') ?? (string) app('ZipkinClient')->getTraceSpanId());
         $response->header('X-B3-SpanId', (string) app('ZipkinClient')->getTraceSpanId());
         $response->header('X-B3-Sampled', app('ZipkinClient')->isSampled());
 
