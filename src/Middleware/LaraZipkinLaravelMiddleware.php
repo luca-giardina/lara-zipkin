@@ -11,7 +11,7 @@ use Zipkin\Timestamp;
 use Zipkin\Kind;
 use Zipkin\Tags;
 
-class LaraZipkinMiddleware
+class LaraZipkinLaravelMiddleware
 {
     /**
      * Handle an incoming request.

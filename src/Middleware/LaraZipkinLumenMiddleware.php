@@ -10,7 +10,7 @@ use Zipkin\Timestamp;
 use Zipkin\Kind;
 use Zipkin\Tags;
 
-class LaraZipkinMiddleware
+class LaraZipkinLumenMiddleware
 {
     /**
      * Handle an incoming request.
