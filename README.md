@@ -48,7 +48,7 @@ edit app.php
 'providers' => [
     ..
     ..
-    AGiardina\LaraZipkin\LaraZipkinServiceProvider::class,
+    \Giardina\LaraZipkin\LaraZipkinServiceProvider::class,
 ],
 ```
 
