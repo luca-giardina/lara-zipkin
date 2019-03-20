@@ -28,10 +28,7 @@ class LaraZipkinServiceProvider extends ServiceProvider
             if( ! env('ZIPKIN_TRACING_ENABLED', false) )
                 return new ZipkinDisabled();
 
-            $ZipkinServerAddr = env('ZIPKIN_SERVER_ADDR') ?? '127.0.0.1';
-            $ZipkinRemotePort = env('ZIPKIN_REMOTE_PORT') ?? '9411';
-            $ZipkinRemoteApiPath = env('ZIPKIN_API_PATH') ?? '/api/v2/spans';
-            $ZipkinRemoteSecure = env('ZIPKIN_REMOTE_HTTPS') ? 'https' : 'http';
+            $ZipkinEndPointUrl = env('ZIPKIN_ENDPOINT_URL') ?? 'http://localhost:9411/api/v2/spans';
 
             $endpoint = Endpoint::create(
                 env('ZIPKIN_ENDPOINT_NAME') ?? PHP_SAPI,
@@ -42,7 +39,7 @@ class LaraZipkinServiceProvider extends ServiceProvider
 
 
             $reporter = new Http(CurlFactory::create(), [
-                'endpoint_url' => $ZipkinRemoteSecure . "://" . $ZipkinServerAddr . ":" . $ZipkinRemotePort . $ZipkinRemoteApiPath
+                'endpoint_url' => $ZipkinEndPointUrl
             ]);
 
             $sampler = BinarySampler::createAsAlwaysSample();

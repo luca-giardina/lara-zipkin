@@ -16,10 +16,7 @@ In .env you should set
 ```
 ZIPKIN_TRACING_ENABLED=true|false
 ZIPKIN_ENDPOINT_NAME=Your_Project_Name
-ZIPKIN_SERVER_ADDR=Zipkin_Endpoint_Hostname
-ZIPKIN_REMOTE_PORT=Zipkin_Endpoint_Port
-ZIPKIN_API_PATH=/api/v2/spans
-ZIPKIN_REMOTE_HTTPS=true|false (is the endpoint url https?)
+ZIPKIN_ENDPOINT_URL=http://localhost:9411/api/v2/spans
 ```
 
 **Lumen Setup**
