@@ -39,21 +39,20 @@ $app->routeMiddleware([
 ]);
 
 ```
-LaraZipkinTerminateMiddleware send spans to Zipkin after the response is sent
-
-LaraZipkinLumenMiddleware track the requests trying to create low cardinality span (ex ``/route/{param}/and/{id}``) 
-
-I suggest you to give names to the routes so you will never have a problem!
 
 **Laravel Setup**
 
 edit app.php
 
 ```
-providers -> Giardina\LaraZipkin\LaraZipkinServiceProvider::class
+'providers' => [
+    ..
+    ..
+    AGiardina\LaraZipkin\LaraZipkinServiceProvider::class,
+],
 ```
 
-if you want to use the middleware to auto track requests add in Kernel.php in protected $middleware = [];
+if you want to use the middleware to auto track requests edit Kernel.php
 
 ```
 protected $middleware = [
@@ -64,15 +63,20 @@ protected $middleware = [
 protected $routeMiddleware = [
     ..
     ..
-    'tracing' => \Giardina\LaraZipkin\Middleware\LaraZipkinMiddleware::class
+    'tracing' => \Giardina\LaraZipkin\Middleware\LaraZipkinLaravelMiddleware::class
 ]
 ```
 
 
+LaraZipkinTerminateMiddleware send spans to Zipkin after the response is sent (so it doesn't affect performances)
+
+the Middleware tracks the requests trying to create low cardinality span (ex ``/route/{param}/and/{id}``) 
+
+I suggest you to give names to the routes so you will never have a problem! https://laravel.com/docs/5.8/routing#named-routes
 
 
 
-N.B. if you are going to use the LaraZipkinMiddleware to create the main span and want to track the other middlewares using the LaraZipkinClient object I suggest you to add the middleware that creates the main span into the protected $middlewarePriority array: https://laravel.com/docs/5.7/middleware#sorting-middleware
+N.B. if you are going to use the Middleware to create the main span and want to track the other middlewares using the LaraZipkinClient object I suggest you to add the middleware that creates the main span into the protected $middlewarePriority array: https://laravel.com/docs/5.7/middleware#sorting-middleware
 
 
 ## Using the ZipkinClient object
